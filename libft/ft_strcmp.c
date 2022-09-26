@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eguler <eguler@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/24 18:07:44 by eguler            #+#    #+#             */
-/*   Updated: 2022/09/26 21:19:40 by eguler           ###   ########.fr       */
+/*   Created: 2022/09/26 20:35:27 by eguler            #+#    #+#             */
+/*   Updated: 2022/09/26 20:36:30 by eguler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
 
-int main(int ac, char **av)
+int	ft_strcmp(char *s1, char *s2)
 {
-    if (ac == 2)
-    {
-        t_cub3d *cub3d;
-        cub3d = malloc(sizeof(t_cub3d));
-        if (!checks_and_setup(av[1], cub3d))
-            error_message();
-    }
-    else
-        error_message();
+	size_t  i;
+
+	i = 0;
+	while ((s1 && s2) && s1[i] != '\0' && s2[i] != '\0')
+	{
+		if (s1[i] != s2[i])
+		{
+			break ;
+		}
+		i++;
+	}
+	if (s2[i] == '\0')
+		return (1);
+	else
+		return (0);
 }
