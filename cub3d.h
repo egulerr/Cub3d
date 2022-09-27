@@ -10,12 +10,15 @@
 typedef struct s_cub3d
 {
     int     fd;
-    char    *all;
-	char	**all_double;
+    char    *all; //tek pointer .cubun hepsi
+	char	**all_double; //çift pointer .cubun hepsi
+    char    **path_color; //path ve color kısmı
     char    *north;
     char	*south;
 	char	*west;
 	char	*east;
+    char	*floor;
+	char	*ceil;
 }   t_cub3d;
 
 //checks

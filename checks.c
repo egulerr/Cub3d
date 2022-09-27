@@ -6,7 +6,7 @@
 /*   By: eguler <eguler@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 18:12:32 by eguler            #+#    #+#             */
-/*   Updated: 2022/09/26 22:03:50 by eguler           ###   ########.fr       */
+/*   Updated: 2022/09/27 19:06:10 by eguler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ void    error_message(void)
     return ;
 }
 
-int check_path(t_cub3d *cub3d)
+int fill_arguments(t_cub3d *cub3d)
 {
     int i;
 
     i = 0;
-    while (cub3d->all_double[i])
+    while (cub3d->all_double[i] && cub3d->all_double[i][0] != '1')
     {
         if (ft_strcmp(cub3d->all_double[i], "NO"))
             cub3d->north = cub3d->all_double[i];
@@ -33,21 +33,62 @@ int check_path(t_cub3d *cub3d)
             cub3d->west = cub3d->all_double[i];
         if (ft_strcmp(cub3d->all_double[i], "EA"))
             cub3d->east = cub3d->all_double[i];
+		if (ft_strcmp(cub3d->all_double[i], "F"))
+            cub3d->floor = cub3d->all_double[i];
+		if (ft_strcmp(cub3d->all_double[i], "C"))
+            cub3d->ceil = cub3d->all_double[i];
         i++;
     }
     return (1);
 }
 
+int word_len(char *str)
+{
+    int i;
+
+    i = 0;
+    while (str[i] && str[i] != 32)
+        i++;
+    return (i);
+}
+
 int check_double_argument(t_cub3d *cub3d)
 {
     int i;
+    int j;
     int count;
+    int len;
 
     count = 0;
     i = 0;
-    while (cub3d->all_double[i])
+    while (cub3d->all_double[i] && cub3d->all_double[i][0] != '1')
     {
-        if (ft_strcmp(cub3d->all_double[i], "NO"))
+        j = 0;
+        while (cub3d->all_double[j])
+        {
+            len = word_len(cub3d->all_double[j]);
+            if (!ft_strncmp(cub3d->all_double[i], cub3d->all_double[j], len))
+                count++;
+            j++;
+        }
+        if (count > 1)
+            return (0);
+        count = 0;
+        i++;
+    }
+    return (1);
+}
+
+int	check_number_of_words(t_cub3d *cub3d)
+{
+	int	i;
+	int	count;
+
+	count = 0;		
+	i = 0;
+	while (cub3d->all_double[i])
+	{
+		if (ft_strcmp(cub3d->all_double[i], "NO"))
             count++;
         if (ft_strcmp(cub3d->all_double[i], "SO"))
             count++;
@@ -55,29 +96,67 @@ int check_double_argument(t_cub3d *cub3d)
             count++;
         if (ft_strcmp(cub3d->all_double[i], "EA"))
             count++;
-        if (ft_strcmp(cub3d->all_double[i], "F"))
+		if (ft_strcmp(cub3d->all_double[i], "F"))
             count++;
-        if (ft_strcmp(cub3d->all_double[i], "C"))
+		if (ft_strcmp(cub3d->all_double[i], "C"))
             count++;
+		i++;
+	}
+	if (count != 6)
+		return (0);
+	return (1);
+}
+
+int	check_wrong_argument(t_cub3d *cub3d)
+{
+	int	i;
+
+	i = 0;
+	while (cub3d->all_double[i] && cub3d->all_double[i][0] != '1')
+    {
+        if (ft_strncmp(cub3d->all_double[i], "NO", 2)
+        && ft_strncmp(cub3d->all_double[i], "SO", 2)
+        && ft_strncmp(cub3d->all_double[i], "WE", 2)
+        && ft_strncmp(cub3d->all_double[i], "EA", 2)
+        && ft_strncmp(cub3d->all_double[i], "F", 1)
+        && ft_strncmp(cub3d->all_double[i], "C", 1))
+        {
+            return (0);
+        }
         i++;
-    }
-    if (count != 6)
-        return (0);
+	}
     return (1);
 }
 
-int checks_and_setup(char *file, t_cub3d *cub3d)
+int	check_is_there_path(t_cub3d *cub3d)
 {
+	if (!ft_strstr(cub3d->north, "./"))
+		return (0);
+	if (!ft_strstr(cub3d->south, "./"))
+		return (0);
+	if (!ft_strstr(cub3d->west, "./"))
+		return (0);
+	if (!ft_strstr(cub3d->east, "./"))
+		return (0);
+	return (1);
+}
+
+int checks_and_setup(char *file, t_cub3d *cub3d)
+{   // yönlerin başına boşluk koydugumda patlıyodu trimlemen lazım. unutma yarın hallet. 
     if (!check_cub(file)) //.cub uzantısı kontrolü
         return (0);
     if (!read_file(file, cub3d)) //dosya okuma yazma işlemi
         return (0);
-    if (!check_double_argument(cub3d)) //aynı argümandan 2 tane var mı kontrolü ve
+    if (!check_double_argument(cub3d)) //aynı argümandan 2 tane var mı kontrolü
         return (0);
-   /*  if (!check_wrong_argument(cub3d)) //herhangi bir satırında istenilen argümanların dışında bir argüman olup olmadığını kontrol etme
-        return (0); */
-    if (!check_path(cub3d))
+    if (!check_number_of_words(cub3d)) //argümanlarım 6 tane olmak zorunda. onun checki.
         return (0);
+	if (!check_wrong_argument(cub3d)) //mapa kadar satır satır kontrol ediyor. 
+		return (0);
+    if (!fill_arguments(cub3d)) //.cub uzantılı dosyayı degiskenlere aktarma. 
+        return (0);
+	if (!check_is_there_path(cub3d)) // NO,SO,WE,EA'lardan sonra path var mı kontrolü
+		return (0);
     return (1);
 }
 
