@@ -6,7 +6,7 @@
 /*   By: eguler <eguler@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 18:12:32 by eguler            #+#    #+#             */
-/*   Updated: 2022/09/27 19:06:10 by eguler           ###   ########.fr       */
+/*   Updated: 2022/09/28 12:39:31 by eguler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,36 @@ void    error_message(void)
     return ;
 }
 
+void	fill_map(t_cub3d *cub3d)
+{
+	int	i;
+	int	j;
+	int	len;
+
+	len = 0;
+	i = 0;
+	while (cub3d->all_double[i] && cub3d->all_double[i][0] != '1')
+		i++;
+	j = i;
+	while (cub3d->all_double[i])
+	{
+		len++;
+		i++;
+	}
+	cub3d->map = malloc(sizeof(char *) * len + 1);
+	i = 0;
+	while (cub3d->all_double[j])
+		cub3d->map[i++] = ft_strdup(cub3d->all_double[j++]);
+	cub3d->map[i] = NULL;
+}
+
 int fill_arguments(t_cub3d *cub3d)
 {
     int i;
 
     i = 0;
     while (cub3d->all_double[i] && cub3d->all_double[i][0] != '1')
-    {
+    { //duvar yollarını ve renklerin degiskenlerinde degisiklik yapıcaksak ft_strdup eklicem.
         if (ft_strcmp(cub3d->all_double[i], "NO"))
             cub3d->north = cub3d->all_double[i];
         if (ft_strcmp(cub3d->all_double[i], "SO"))
@@ -39,6 +62,8 @@ int fill_arguments(t_cub3d *cub3d)
             cub3d->ceil = cub3d->all_double[i];
         i++;
     }
+	//fill_paths(cub3d);
+	fill_map(cub3d);
     return (1);
 }
 
@@ -142,7 +167,7 @@ int	check_is_there_path(t_cub3d *cub3d)
 }
 
 int checks_and_setup(char *file, t_cub3d *cub3d)
-{   // yönlerin başına boşluk koydugumda patlıyodu trimlemen lazım. unutma yarın hallet. 
+{ 
     if (!check_cub(file)) //.cub uzantısı kontrolü
         return (0);
     if (!read_file(file, cub3d)) //dosya okuma yazma işlemi
@@ -157,6 +182,8 @@ int checks_and_setup(char *file, t_cub3d *cub3d)
         return (0);
 	if (!check_is_there_path(cub3d)) // NO,SO,WE,EA'lardan sonra path var mı kontrolü
 		return (0);
+	/* if (!check_is_open_path(cub3d)) // açılıyo mu kontrolü fotoları bulduktan sonra yaz.
+		return (0); */
     return (1);
 }
 

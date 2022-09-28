@@ -6,7 +6,7 @@
 /*   By: eguler <eguler@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 12:00:17 by eguler            #+#    #+#             */
-/*   Updated: 2022/09/27 15:44:27 by eguler           ###   ########.fr       */
+/*   Updated: 2022/09/28 11:26:58 by eguler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,19 @@
 
 int	read_file(char *file, t_cub3d *cub3d)
 {
+	int	i;
+
 	cub3d->fd = open(file, O_RDONLY);
     if (cub3d->fd < 0) 
         return (0);
     cub3d->all = ft_read(cub3d->fd, cub3d->all);
     cub3d->all_double = ft_split(cub3d->all, '\n');
+	i = 0;
+	while (cub3d->all_double[i] && cub3d->all_double[i][0] != '1')
+	{
+		cub3d->all_double[i] = ft_strtrim(cub3d->all_double[i], " ");
+		i++;
+	}
 	return (1);
 }
 

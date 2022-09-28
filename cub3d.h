@@ -13,7 +13,8 @@ typedef struct s_cub3d
     char    *all; //tek pointer .cubun hepsi
 	char	**all_double; //çift pointer .cubun hepsi
     char    **path_color; //path ve color kısmı
-    char    *north;
+    char    **map; //map
+    char    *north; //
     char	*south;
 	char	*west;
 	char	*east;
