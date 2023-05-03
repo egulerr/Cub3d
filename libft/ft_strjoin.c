@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eguler <42istanbul.com.tr>                 +#+  +:+       +#+        */
+/*   By: eguler <eguler@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 18:14:50 by eguler            #+#    #+#             */
-/*   Updated: 2022/01/18 17:17:05 by eguler           ###   ########.fr       */
+/*   Updated: 2022/10/04 18:35:41 by eguler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strjoin(const char *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	int		i;
 	int		j;
@@ -35,6 +35,7 @@ char	*ft_strjoin(const char *s1, char const *s2)
 		while (s2[j] != '\0')
 			dest[i++] = s2[j++];
 		dest[i] = '\0';
+		free(s1);
 		return (dest);
 	}
 	return (0);

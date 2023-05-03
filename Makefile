@@ -1,13 +1,27 @@
-NAME    = cub3d
+NAME    = cub3D
 CC = gcc
 INC = cub3d.h
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -L./mlx -lmlx -framework AppKit -framework OpenGL -g
 LIBFT = libft/libft.a
 RM = rm -rf
-SRCS    =	main.c		\
-			checks.c	\
-			readfile.c	\
-
+SRCS    =	main.c				\
+			checks.c			\
+			checks_utils.c		\
+			checks_utils2.c		\
+			checks_utils3.c		\
+			checks2.c			\
+			readfile.c			\
+			fill_arg.c			\
+			check_map.c			\
+			raycast.c			\
+			main_utils.c		\
+			movement.c			\
+			movement_utils.c	\
+			movement_utils_2.c	\
+			ft_free.c			\
+			color.c				\
+			main_utils_2.c		\
+			
 OBJS = $(SRCS:.c=.o)
 Y = "\033[33m"
 R = "\033[31m"
@@ -17,25 +31,36 @@ X = "\033[0m"
 UP = "\033[A"
 CUT = "\033[K"
 
+MLX = ./mlx/libmlx.a
+
 all: $(NAME)
+
+$(MLX):
+		@make -C ./mlx
 
 $(LIBFT):
 	@make -C libft/
 
-$(NAME): $(OBJS) $(LIBFT)
-	@$(CC) $(OBJS) -o $(NAME) $(LIBFT)
+$(NAME): $(OBJS) $(LIBFT) $(MLX)
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBFT)
 	@echo $(B)cub3d is ready!
 
 %.o: %.c $(INC)
 	@echo $(R)Complining [$<]
-	@${CC} $(CFLAGS) -c $< -o $@ $(CFLAGS)
+	@${CC} -c $< -o $@ -Wall -Werror -Wextra -g
 
 clean:
 	@$(RM) $(OBJS)
 	@echo $(R)Removed [$(OBJS)]
 
+norm:
+	@norminette $(SRCS)
+	@norminette cub3d.h
+	@norminette libft/
+
 fclean: clean
 	@$(RM) $(NAME)
+	@$(RM) $(MLX)
 	@echo $(R)Removed [$(NAME)]
 	@make fclean -C libft/
 

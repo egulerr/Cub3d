@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eguler <42istanbul.com.tr>                 +#+  +:+       +#+        */
+/*   By: malasaha <malasaha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 11:51:23 by eguler            #+#    #+#             */
-/*   Updated: 2022/01/17 13:33:25 by eguler           ###   ########.fr       */
+/*   Updated: 2022/09/29 21:23:36 by malasaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@ int	ft_atoi(const char *str)
 	int		i;
 	long	num;
 	int		neg;
-	int		count;
 
-	count = 0;
 	num = 0;
 	neg = 1;
 	i = 0;
