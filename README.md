@@ -25,7 +25,7 @@ $ ./cub3D <map>
 + Dynamic lighting
 
 ## Contributors
-+ [Ahmet Hakan Gunes](https://github.com/ahmethakangunes)
++ [Mert Alaşahan](https://github.com/mertflixs)
 
 ## Views
 <div>
